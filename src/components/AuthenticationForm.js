@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Input, Button } from 'react-native-elements';
+import { Headline, Button } from 'react-native-paper';
+import { Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -21,9 +22,7 @@ const AuthenticationForm = ({ headerText, submitButtontext, onSubmit, linkText, 
         ...styles.container,
       }}
     >
-      <Text h3 style={styles.titleStyle}>
-        {headerText}
-      </Text>
+      <Headline style={styles.titleStyle}>{headerText}</Headline>
       <Input
         label="Your Email Address"
         placeholder="email@address.com"
@@ -44,13 +43,16 @@ const AuthenticationForm = ({ headerText, submitButtontext, onSubmit, linkText, 
         secureTextEntry
       />
       <Button
-        title={submitButtontext}
-        buttonStyle={styles.submitBtn}
-        titleStyle={styles.btnTitle}
+        mode="contained"
+        style={styles.submitBtn}
+        labelStyle={styles.btnTitle}
         onPress={() => onSubmit({ email, password })}
-      />
-
-      <Button title={linkText} type="clear" titleStyle={styles.link} onPress={() => navigation.navigate(linkTo)} />
+      >
+        {submitButtontext}
+      </Button>
+      <Button mode="text" labelStyle={styles.link} onPress={() => navigation.navigate(linkTo)}>
+        {linkText}
+      </Button>
     </View>
   );
 };

@@ -1,36 +1,98 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import CategoryScreen from '../screens/CategoryScreen';
 import SearchScreen from '../screens/SearchScreen';
 
-const bottomTab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
+const SearchStack = createStackNavigator();
+const categoryStack = createStackNavigator();
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
   return (
-    <bottomTab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
-          if (route.name === 'Explore') {
-            iconName = focused ? 'food' : 'food-apple-outline';
-          } else if (route.name === 'Browse') {
-            iconName = focused ? 'shopping-search' : 'search-web';
-          }
-
-          return <MaterialCommunityIcons name={iconName} size={24} color="black" />;
-        },
-      })}
-      tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
-      }}
-    >
-      <bottomTab.Screen name="Explore" component={CategoryScreen} />
-      <bottomTab.Screen name="Browse" component={SearchScreen} />
-    </bottomTab.Navigator>
+    <Tab.Navigator initialRouteName="Browse" activeColor="#fff" shifting={true}>
+      <Tab.Screen
+        name="Browse"
+        component={SearchStackScreen}
+        options={{
+          tabBarLabel: 'Browse',
+          tabBarColor: '#009b73',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="shopping-search" color={color} size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={CategoryStackScreen}
+        options={{
+          tabBarLabel: 'Explore',
+          tabBarColor: '#078282FF',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="food-apple" color={color} size={26} />,
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 
 export default HomePage;
+
+const SearchStackScreen = ({ navigation }) => (
+  <SearchStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#009b73',
+      },
+      headerTintColor: '#fff',
+    }}
+  >
+    <SearchStack.Screen
+      name="Browse"
+      component={SearchScreen}
+      options={{
+        title: 'Search',
+        headerTitleStyle: {
+          color: '#ffffff',
+        },
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#009b73"
+            onPress={() => navigation.openDrawer()}
+          ></Icon.Button>
+        ),
+      }}
+    />
+  </SearchStack.Navigator>
+);
+
+const CategoryStackScreen = ({ navigation }) => (
+  <categoryStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#078282FF',
+      },
+      headerTintColor: '#fff',
+    }}
+  >
+    <SearchStack.Screen
+      name="Explore"
+      component={CategoryScreen}
+      options={{
+        title: 'Category',
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#078282FF"
+            onPress={() => navigation.openDrawer()}
+          ></Icon.Button>
+        ),
+      }}
+    />
+  </categoryStack.Navigator>
+);

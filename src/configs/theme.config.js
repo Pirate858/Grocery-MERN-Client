@@ -1,8 +1,12 @@
+import { DefaultTheme } from 'react-native-paper';
 const theme = {
+  ...DefaultTheme,
+  roundness: 2,
   colors: {
-    primary: '#009b73',
-    secondary: '#2BDA8E',
-    tertiary: '#FFE358',
+    ...DefaultTheme.colors,
+    primary: '#339E66FF',
+    accent: '#f1c40f',
+    surface: '#f3f3f3',
   },
 };
 

@@ -11,6 +11,8 @@ const authReducer = (state, action) => {
       return { errorMessage: '', token: action.payload };
     case 'clear_error_message':
       return { ...state, errorMessage: '' };
+    case 'signout':
+      return { token: null, errorMessage: '' };
     default:
       return state;
   }
@@ -20,7 +22,7 @@ const tryLocalSignIn = (dispatch) => async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
     dispatch({ type: 'signin', payload: token });
-    RootNavigation.navigate('Homepage');
+    RootNavigation.navigate('Homepage', { screen: 'Browse' });
   } else {
     RootNavigation.navigate('SignUp');
   }
@@ -36,7 +38,7 @@ const signup = (dispatch) => {
       const response = await grocerApi.post('/auth/signup', { email, password });
       await AsyncStorage.setItem('token', response.data.token);
       dispatch({ type: 'signin', payload: response.data.token });
-      RootNavigation.navigate('Homepage');
+      RootNavigation.navigate('Homepage', { screen: 'Browse' });
     } catch (err) {
       dispatch({ type: 'add_error', payload: 'Something went wrong with sign-up' });
     }
@@ -49,7 +51,7 @@ const signin = (dispatch) => {
       const response = await grocerApi.post('/auth/signin', { email, password });
       await AsyncStorage.setItem('token', response.data.token);
       dispatch({ type: 'signin', payload: response.data.token });
-      RootNavigation.navigate('Homepage');
+      RootNavigation.navigate('Homepage', { screen: 'Browse' });
     } catch (err) {
       dispatch({ type: 'add_error', payload: 'Something went wrong with sign-in' });
     }
@@ -57,7 +59,11 @@ const signin = (dispatch) => {
 };
 
 const signout = (dispatch) => {
-  return () => {};
+  return async () => {
+    await AsyncStorage.removeItem('token');
+    dispatch({ type: 'signout' });
+    RootNavigation.navigate('SignIn');
+  };
 };
 
 export const { Provider, Context } = createDataContext(
