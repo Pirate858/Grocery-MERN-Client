@@ -13,14 +13,22 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "splash": {
+        "mdpi": "./assets/loading_1.png",
+        "hdpi": "./assets/loading_1.png",
+        "xhdpi": "./assets/loading_1.png",
+        "xxhdpi": "./assets/loading_1.png",
+        "xxxhdpi": "./assets/loading_1.png",
+        "resizeMode": "cover"
+      }
     }
   }
 }

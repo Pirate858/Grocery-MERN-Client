@@ -6,8 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import CategoryScreen from '../screens/CategoryScreen';
+import CategoryTab from '../screens/CategoryTab';
 import SearchScreen from '../screens/SearchScreen';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Tab = createMaterialBottomTabNavigator();
 const SearchStack = createStackNavigator();
@@ -31,7 +32,7 @@ const HomePage = ({ navigation }) => {
         options={{
           tabBarLabel: 'Explore',
           tabBarColor: '#078282FF',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="food-apple" color={color} size={26} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="local-grocery-store" size={26} color={color} />,
         }}
       />
     </Tab.Navigator>
@@ -79,9 +80,9 @@ const CategoryStackScreen = ({ navigation }) => (
       headerTintColor: '#fff',
     }}
   >
-    <SearchStack.Screen
+    <categoryStack.Screen
       name="Explore"
-      component={CategoryScreen}
+      component={CategoryTab}
       options={{
         title: 'Category',
         headerLeft: () => (
