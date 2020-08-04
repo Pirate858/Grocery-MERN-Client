@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Button, Text, Title, useTheme, Caption } from 'react-native-paper';
+import { Context as CartContext } from '../context/CartContext';
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item, setAvailability, quantity }) => {
   const theme = useTheme();
-  const { name, originalPrice, price, photo, unitMeasured } = item;
+  const { maxAvailable, name, originalPrice, price, photo, unitMeasured } = item;
+  const { addItemToCart, removeItemFromCart } = useContext(CartContext);
+
+  const handleIncrementClick = () => {
+    if (quantity >= maxAvailable) {
+      setAvailability(false);
+    } else {
+      addItemToCart(item);
+    }
+  };
+
+  const handleDecrementClick = () => {
+    if (quantity > 0) {
+      removeItemFromCart(item);
+    }
+  };
+
   return (
     <Card style={styles.cardContainer}>
       <Card.Cover
@@ -24,11 +41,25 @@ const ItemCard = ({ item }) => {
           {originalPrice}
         </Text>
       </Card.Content>
-      <Card.Actions style={{ alignSelf: 'center', marginLeft: 5, marginBottom: 10 }}>
-        <Button icon="plus" />
-        <Text>4</Text>
-        <Button icon="minus" />
-        <Caption>{unitMeasured}</Caption>
+      <Card.Actions style={{ alignSelf: 'center', marginLeft: 5, marginBottom: 5 }}>
+        {quantity < 1 ? (
+          <Button
+            icon="cart-arrow-down"
+            mode="contained"
+            uppercase={false}
+            style={{ marginRight: 5, maxHeight: 35 }}
+            onPress={handleIncrementClick}
+          >
+            Buy
+          </Button>
+        ) : (
+          <>
+            <Button icon="minus" compact onPress={handleDecrementClick} />
+            <Text>{quantity}</Text>
+            <Button icon="plus" compact onPress={handleIncrementClick} />
+            <Caption style={{ marginRight: 10 }}>{unitMeasured}</Caption>
+          </>
+        )}
       </Card.Actions>
     </Card>
   );
@@ -42,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     maxHeight: 275,
-    minWidth: 150,
+    width: 160,
     borderRadius: 20,
     elevation: 5,
     backgroundColor: '#ebf6f7',

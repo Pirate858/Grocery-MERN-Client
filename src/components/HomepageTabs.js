@@ -14,7 +14,7 @@ const Tab = createMaterialBottomTabNavigator();
 const SearchStack = createStackNavigator();
 const categoryStack = createStackNavigator();
 
-const HomePage = ({ navigation }) => {
+const HomePage = () => {
   return (
     <Tab.Navigator initialRouteName="Browse" activeColor="#fff" shifting={true}>
       <Tab.Screen
@@ -66,6 +66,13 @@ const SearchStackScreen = ({ navigation }) => (
             onPress={() => navigation.openDrawer()}
           ></Icon.Button>
         ),
+        headerRight: () => (
+          <MaterialCommunityIcons name="cart" size={25} color="#fff" onPress={() => navigation.navigate('Checkout')} />
+        ),
+        headerRightContainerStyle: {
+          borderRightWidth: 25,
+          borderRightColor: '#009b73',
+        },
       }}
     />
   </SearchStack.Navigator>
@@ -93,6 +100,13 @@ const CategoryStackScreen = ({ navigation }) => (
             onPress={() => navigation.openDrawer()}
           ></Icon.Button>
         ),
+        headerRight: () => (
+          <MaterialCommunityIcons name="cart" size={25} color="#fff" onPress={() => navigation.navigate('Checkout')} />
+        ),
+        headerRightContainerStyle: {
+          borderRightWidth: 25,
+          borderRightColor: '#078282FF',
+        },
       }}
     />
   </categoryStack.Navigator>
